@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SHOP SPORT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="snow-canvas"></canvas>
+
+    <div id="welcome-modal" class="modal-overlay" style="display:flex; z-index: 9999;">
+        <div class="modal-content welcome-content">
+            <h2>THÔNG BÁO QUANG TRỌNG</h2>
+            <div style="margin: 20px 0; text-align: left; color: #a0a0a0;">
+                <p>👋 CHÀO MỪNG ĐẾN VỚI <strong>SHOPLCCRACK </strong>.</p>
+                <p>⚠️ LƯU Ý : NẠP QUA NGÂN HÀNG NHỚ GHI NỘI DUNG</p>
+            </div>
+            <button class="btn-submit" onclick="document.getElementById('welcome-modal').style.display='none'">Đ𝐨́𝐧𝐠</button>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" id="overlay" onclick="toggleMenu()"></div>
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="sidebar-logo"><img src="https://i.postimg.cc/V68LFmC5/4f3cae6bfd1dfb9405d8c068d6d23762.jpg" alt="Logo"></div>
+            <h3 style="margin: 10px 0 0; color: var(--text-main);">SHOPLC</h3>
+            <p style="margin: 5px 0 0; font-size: 12px; color: var(--text-sub);">KHO FILE IOS VÀ ADR</p>
+        </div>
+        <div class="sidebar-menu">
+            <div class="menu-item active" onclick="toggleMenu()"><i class="fa-solid fa-house"></i> TRANG CHỦ</div>
+            <div class="menu-item" onclick="openDepositModal()"><i class="fa-solid fa-wallet"></i> NẠP TIỀN</div>
+            <div class="menu-item" onclick="openHistoryModal()"><i class="fa-solid fa-clock-rotate-left"></i> LỊCH SỬ GD</div>
+            <div class="menu-item" onclick="openContactModal()"><i class="fa-brands fa-telegram"></i> LIÊN HỆ</div>
+            <div class="menu-item admin-only" id="admin-menu-btn" onclick="openAdminModal()"><i class="fa-solid fa-user-secret"></i> QUẢN LÝ</div>
+            <div class="menu-item" onclick="resetAppData()" style="color: #ff4757;"><i class="fa-solid fa-triangle-exclamation"></i> RESETDATA</div>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <i class="fa-solid fa-bars" style="font-size: 22px; cursor: pointer; color: var(--text-main);" onclick="toggleMenu()"></i>
+            <a href="javascript:void(0)" class="btn-nav btn-wallet" onclick="openDepositModal()">
+                <i class="fa-solid fa-wallet"></i> <span id="user-balance">0đ</span>
+            </a>
+        </div>
+        <div class="nav-right">
+            <a href="javascript:void(0)" class="btn-nav btn-login" id="nav-login-btn" onclick="openLoginModal()">
+                <i class="fa-solid fa-right-to-bracket"></i> Đ𝐚̆𝐧𝐠 𝐍𝐡𝐚̣̂𝐩
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="alert-box">
+            <h2 style="margin-top:0"><i class="fa-solid fa-bullhorn"></i> 𝐓𝐡𝐨̂𝐧𝐠 𝐁𝐚́𝐎</h2>
+            <p style="font-size:13px">Admin chúc anh em năm mới vui vẻ! Shop đang update nhiều FILE IOS VÀ ADR.</p>
+        </div>
+
+        <div class="category-filter">
+            <button class="cat-btn active" data-filter="freefire">FILE SHADOWROCKET</button>
+            <button class="cat-btn" data-filter="roblox">FILE ADR NHE TAM</button>
+        </div>
+
+        <h3 style="color:var(--text-main); margin-bottom: 20px;">DANH SÁCH SẢN PHẨM</h3>
+        
+        <div class="product-grid" id="product-grid-area"></div>
+
+        <div style="text-align:center; margin-top:40px; color:var(--text-sub); font-size:12px;">
+            &copy; 2026 livechu. All rights reserved.
+        </div>
+    </div>
+
+    <div id="auth-modal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal-btn" onclick="closeLoginModal()"><i class="fa-solid fa-xmark"></i></button>
+            <div class="auth-container">
+                <div class="auth-header">
+                    <img src="https://i.postimg.cc/V68LFmC5/4f3cae6bfd1dfb9405d8c068d6d23762.jpg" class="auth-logo">
+                    <h3 class="auth-title">Welcome Back</h3>
+                    <p style="color:#666; font-size:12px; margin-top:5px;">Vui lòng đăng nhập để tiếp tục</p>
+                </div>
+                <div class="auth-tabs-new">
+                    <div class="auth-tab-new active" onclick="switchAuthTab('login')">Đăng Nhập</div>
+                    <div class="auth-tab-new" onclick="switchAuthTab('register')">Đăng Ký</div>
+                </div>
+                <div id="login-form">
+                    <div class="input-box-new"><input type="text" id="login-user" class="input-new" placeholder="Tên đăng nhập"><i class="fa-solid fa-user"></i></div>
+                    <div class="input-box-new"><input type="password" id="login-pass" class="input-new" placeholder="Mật khẩu"><i class="fa-solid fa-lock"></i></div>
+                    <button class="btn-auth-new" onclick="handleLogin()">ĐĂNG NHẬP <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+                <div id="register-form" style="display:none;">
+                    <div class="input-box-new"><input type="text" id="reg-user" class="input-new" placeholder="Tên tài khoản mới"><i class="fa-solid fa-user-plus"></i></div>
+                    <div class="input-box-new"><input type="password" id="reg-pass" class="input-new" placeholder="Mật khẩu"><i class="fa-solid fa-lock"></i></div>
+                    <div class="input-box-new"><input type="password" id="reg-repass" class="input-new" placeholder="Nhập lại mật khẩu"><i class="fa-solid fa-shield-halved"></i></div>
+                    <button class="btn-auth-new" onclick="handleRegister()">TẠO TÀI KHOẢN <i class="fa-solid fa-user-check"></i></button>
+                </div>
+                <div class="auth-footer">Bằng cách đăng nhập, bạn đồng ý với <a href="#" style="color:var(--primary)">Điều khoản</a> của Shop.</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="payment-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header"><div class="modal-title">Thanh toán đơn hàng</div><button class="close-modal-btn" onclick="closeModal('payment-modal')"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="modal-body">
+                <div class="form-group"><label class="form-label">Tên sản phẩm:</label><input type="text" id="pm-name" class="form-input" readonly></div>
+                <div class="form-group"><label class="form-label">Số lượng cần mua:</label><input type="number" id="pm-qty" class="form-input" value="1" min="1" oninput="updateTotal()"></div>
+                <button class="btn-discount">Nhập mã giảm giá</button>
+                <div class="total-section">Tổng tiền: <span id="pm-total" class="total-price">0</span></div>
+                <button class="btn-pay-confirm" onclick="processPayment()"><i class="fa-solid fa-credit-card"></i> Thanh toán</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="deposit-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal-btn" onclick="closeDepositModal()"><i class="fa-solid fa-xmark"></i></span>
+            <div style="padding: 20px;">
+                <h3 style="text-align:center; color:var(--text-main); margin-top:0;">NẠP TIỀN</h3>
+                <div class="auth-tabs"><div class="auth-tab active" id="tab-bank" onclick="switchDepositTab('bank')">CHUYỂN KHOẢN</div><div class="auth-tab" id="tab-card" onclick="switchDepositTab('card')">THẺ CÀO</div></div>
+                <div id="deposit-bank-form"><div class="input-group"><i class="fa-solid fa-money-bill"></i><input type="number" id="bank-amount" placeholder="Nhập số tiền"></div><button class="btn-submit" onclick="showStaticQR()">LẤY QR CHUYỂN KHOẢN</button><div class="qr-section" id="qr-result" style="display:none; margin-top:20px;"><img id="qr-image" class="qr-img" src="" alt="QR Code" style="display:inline-block;"><div class="bank-desc">Nội dung: <strong id="qr-content" style="color:yellow;">...</strong></div></div></div>
+                <div id="deposit-card-form" style="display:none;"><div class="input-group"><i class="fa-solid fa-sim-card"></i><select id="card-type"><option value="">-- Nhà Mạng --</option><option value="VIETTEL">Viettel</option><option value="VINAPHONE">Vinaphone</option></select></div><div class="input-group"><i class="fa-solid fa-money-bill"></i><select id="card-price"><option value="">-- Mệnh Giá --</option><option value="10000">10.000đ</option><option value="20000">20.000đ</option></select></div><div class="input-group"><i class="fa-solid fa-barcode"></i><input type="text" id="card-serial" placeholder="Số Seri"></div><div class="input-group"><i class="fa-solid fa-key"></i><input type="text" id="card-code" placeholder="Mã Thẻ"></div><button class="btn-submit" id="btn-deposit" onclick="handleDepositCard()">GỬI THẺ</button></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="history-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width:500px;">
+            <span class="close-modal-btn" onclick="closeHistoryModal()"><i class="fa-solid fa-xmark"></i></span>
+            <div style="padding: 20px;">
+                <h3 style="text-align:center; color:var(--text-main); margin-top:0;">LỊCH SỬ MUA HÀNG</h3>
+                <div style="max-height:300px; overflow-y:auto;">
+                    <table class="history-table"><thead><tr><th>Sản phẩm</th><th>Giá</th><th>Ngày</th></tr></thead><tbody id="history-list-buy"></tbody></table>
+                    <div id="empty-history" class="empty-history" style="display:none; text-align:center; color:#666; margin-top:20px;">Chưa có dữ liệu!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contact-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal-btn" onclick="closeContactModal()"><i class="fa-solid fa-xmark"></i></span>
+            <div style="padding: 20px; text-align: center;">
+                <h3>LIÊN HỆ ADMIN</h3>
+                <a href="https://t.me/livechu2004" target="_blank" class="btn-submit" style="display:block; text-decoration:none; margin-bottom:10px; background:#229ED9;"><i class="fa-brands fa-telegram"></i> Telegram</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="admin-modal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal-btn" onclick="closeAdminModal()"><i class="fa-solid fa-xmark"></i></span>
+            <div style="padding: 20px;">
+                <h3 style="text-align:center; color:#ff4757; margin-top:0;">QUẢN TRỊ VIÊN</h3>
+                <div class="input-group"><input type="text" id="admin-username" placeholder="Username"></div>
+                <div class="input-group"><input type="number" id="admin-amount" placeholder="Số tiền"></div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn-submit" style="background:#2ecc71; margin-top:0;" onclick="adminAction('add')">Cộng Tiền</button>
+                    <button class="btn-submit" style="background:#ff4757; margin-top:0;" onclick="adminAction('set')">Cài Số Dư</button>
+                </div>
+                <button class="btn-submit" style="background:#34495e; margin-top:10px;" onclick="adminAction('reset')">Reset Về 0đ</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
